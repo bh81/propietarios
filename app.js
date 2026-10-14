@@ -229,7 +229,6 @@ async function requestLink(email) {
   $("login-sent").hidden = false;
 }
 
-}
 
 /* ============================ data load ============================ */
 async function loadAll() {
