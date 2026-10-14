@@ -14,7 +14,7 @@ const STR = {
     login_intro: "Sin contraseñas. Use únicamente el correo electrónico que tiene registrado con nosotros: le enviaremos un enlace de acceso de un solo uso, válido por 60 minutos.",
     email_label: "Correo electrónico", email_ph: "su@correo.com",
     send_link: "Enviar enlace de acceso",
-    sent_msg: "Si ese correo está registrado, le enviamos un enlace de acceso y un código de 6 dígitos. Revise su bandeja de entrada (y el correo no deseado).",
+    sent_msg: "Si su correo está en nuestra base de datos, ya le enviamos el enlace de acceso — recuerde que es válido por 60 minutos. Revise su bandeja de entrada (y el correo no deseado).",
     or_code: "o ingrese con un código", otp_label: "Código de 6 dígitos",
     verify_code: "Entrar",
     otp_hint: "Si su correo no muestra el enlace, use el código de 6 dígitos que llega en el mismo mensaje.",
@@ -47,7 +47,7 @@ const STR = {
     login_intro: "No passwords. Use only the email address you have on file with us — we will send you a single-use access link, good for 60 minutes.",
     email_label: "Email address", email_ph: "you@email.com",
     send_link: "Send access link",
-    sent_msg: "If that email is registered, we sent you an access link and a 6-digit code. Check your inbox (and spam folder).",
+    sent_msg: "If your email is in our database, we have sent you the access link — remember it is good for 60 minutes. Check your inbox (and spam folder).",
     or_code: "or sign in with a code", otp_label: "6-digit code",
     verify_code: "Sign in",
     otp_hint: "If your mail app hides the link, use the 6-digit code from the same message.",
@@ -75,7 +75,11 @@ const STR = {
     participation: "Ownership share",
   },
 };
-let LANG = localStorage.getItem("od_lang") || "es";
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch (_) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (_) {} },
+};
+let LANG = store.get("od_lang") || "es";
 const t = (k) => (STR[LANG] && STR[LANG][k]) || STR.es[k] || k;
 
 /* ============================ formatting ============================ */
@@ -215,6 +219,7 @@ async function requestAccessByToken(token) {
 async function requestLink(email) {
   // Anti-enumeration: the UI shows the same confirmation either way.
   try {
+    if (!state.sb) state.sb = await initSupabase();
     await state.sb.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: location.origin + location.pathname },
@@ -260,7 +265,7 @@ async function loadAll() {
     if (DEMO && !state.segmentId) state.segmentId = state.segments[0].id;
     // Owner language preference wins over the stored toggle, once.
     const pref = state.owners[0] && state.owners[0].language;
-    if (pref && !localStorage.getItem("od_lang_user_set")) { LANG = pref; applyI18n(); }
+    if (pref && !store.get("od_lang_user_set")) { LANG = pref; applyI18n(); }
     if (!state.loggedLogin) { state.loggedLogin = true; logAccess("login"); }
     renderShell();
     route();
@@ -579,22 +584,22 @@ async function init() {
   window.addEventListener("hashchange", route);
 
   if (DEMO) { showApp(); await loadAll(); return; }
-  state.sb = await initSupabase();
-  const { data } = await state.sb.auth.getSession();
-  if (data && data.session) await onSession(data.session);
-  else {
-    showLogin();
-    const tok = new URLSearchParams(location.search).get("t");
-    if (tok) await requestAccessByToken(tok);
-  }
-  state.sb.auth.onAuthStateChange((_evt, session) => {
+  try {
+    state.sb = await initSupabase();
+    const { data } = await state.sb.auth.getSession();
+    if (data && data.session) { await onSession(data.session); return; }
+  } catch (err) { console.error("Supabase boot failed:", err); }
+  showLogin();
+  const tok = new URLSearchParams(location.search).get("t");
+  if (tok) requestAccessByToken(tok);
+  if (state.sb) state.sb.auth.onAuthStateChange((_evt, session) => {
     if (session && (!state.user || state.user.id !== session.user.id)) onSession(session);
   });
 }
 function setLang(l) {
   LANG = l;
-  localStorage.setItem("od_lang", l);
-  localStorage.setItem("od_lang_user_set", "1");
+  store.set("od_lang", l);
+  store.set("od_lang_user_set", "1");
   applyI18n();
   if (!$("view-app").hidden && state.segments.length) { renderShell(); route(); }
 }
