@@ -11,7 +11,7 @@ const STR = {
   es: {
     brand_sub: "Panel de Propietario", sign_out: "Salir",
     login_title: "Acceda a su panel",
-    login_intro: "Sin contraseñas. Le enviamos un enlace de acceso de un solo uso a su correo registrado; el enlace es válido por 60 minutos.",
+    login_intro: "Sin contraseñas. Use únicamente el correo electrónico que tiene registrado con nosotros: le enviaremos un enlace de acceso de un solo uso, válido por 60 minutos.",
     email_label: "Correo electrónico", email_ph: "su@correo.com",
     send_link: "Enviar enlace de acceso",
     sent_msg: "Si ese correo está registrado, le enviamos un enlace de acceso y un código de 6 dígitos. Revise su bandeja de entrada (y el correo no deseado).",
@@ -44,7 +44,7 @@ const STR = {
   en: {
     brand_sub: "Owner Dashboard", sign_out: "Sign out",
     login_title: "Access your dashboard",
-    login_intro: "No passwords. We email a single-use access link to your registered address; the link is good for 60 minutes.",
+    login_intro: "No passwords. Use only the email address you have on file with us — we will send you a single-use access link, good for 60 minutes.",
     email_label: "Email address", email_ph: "you@email.com",
     send_link: "Send access link",
     sent_msg: "If that email is registered, we sent you an access link and a 6-digit code. Check your inbox (and spam folder).",
@@ -224,15 +224,6 @@ async function requestLink(email) {
   $("login-sent").hidden = false;
 }
 
-async function verifyCode(email, token) {
-  const errEl = $("login-error"); errEl.hidden = true;
-  try {
-    const { data, error } = await state.sb.auth.verifyOtp({ email, token, type: "email" });
-    if (error || !data || !data.session) throw new Error("otp");
-    await onSession(data.session);
-  } catch (_) {
-    errEl.textContent = t("otp_bad"); errEl.hidden = false;
-  }
 }
 
 /* ============================ data load ============================ */
@@ -568,11 +559,7 @@ async function init() {
     if (DEMO) { showApp(); await loadAll(); return; }
     await requestLink($("email").value.trim());
   });
-  $("otp-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    if (DEMO) { showApp(); await loadAll(); return; }
-    await verifyCode($("email").value.trim(), $("otp").value.trim());
-  });
+
   $("lang-es").addEventListener("click", () => setLang("es"));
   $("lang-en").addEventListener("click", () => setLang("en"));
   $("segment-select").addEventListener("change", async (e) => {
