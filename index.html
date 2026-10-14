@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Panel de Propietario — Casacol</title>
-<meta name="description" content="Panel de propietario Casacol: informes mensuales, facturas y documentos tributarios.">
+<title>Loma Verde — Portal de Propietarios</title>
+<meta name="description" content="Portal de propietarios Loma Verde: informes mensuales, facturas y documentos tributarios.">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -12,8 +12,8 @@
 <header class="band">
   <div class="band-inner">
     <div class="brand">
-      <div class="brand-name">C A S A C O L</div>
-      <div class="brand-sub" data-i18n="brand_sub">Panel de Propietario</div>
+      <img class="brand-logo" src="logo-loma-verde.png" alt="Loma Verde">
+      <div class="brand-sub" data-i18n="brand_sub">Portal de Propietarios</div>
     </div>
     <div class="band-actions">
       <span id="demo-badge" class="demo-badge" hidden>DEMO</span>
@@ -66,13 +66,11 @@
     <p id="closed-note" class="notice" hidden></p>
 
     <nav class="tabs" id="tabs">
-      <a href="#/inicio" data-route="inicio" data-i18n="nav_home">Inicio</a>
-      <a href="#/hotel" data-route="hotel" data-i18n="nav_hotel">El hotel este mes</a>
+      <a href="#/hotel" data-route="hotel" data-i18n="nav_home">Inicio</a>
       <a href="#/documentos" data-route="documentos" data-i18n="nav_docs">Documentos</a>
       <a href="#/pagos" data-route="pagos" data-i18n="nav_payments">Pagos</a>
     </nav>
 
-    <div id="view-inicio" class="subview"></div>
     <div id="view-hotel" class="subview" hidden></div>
     <div id="view-documentos" class="subview" hidden></div>
     <div id="view-pagos" class="subview" hidden></div>

@@ -9,7 +9,7 @@ const SUPABASE_ESM = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm"
 /* ============================== i18n ============================== */
 const STR = {
   es: {
-    brand_sub: "Panel de Propietario", sign_out: "Salir",
+    brand_sub: "Portal de Propietarios", sign_out: "Salir",
     login_title: "Acceda a su panel",
     login_intro: "Sin contraseñas. Use únicamente el correo electrónico que tiene registrado con nosotros: le enviaremos un enlace de acceso de un solo uso, válido por 60 minutos.",
     email_label: "Correo electrónico", email_ph: "su@correo.com",
@@ -21,8 +21,8 @@ const STR = {
     otp_bad: "Código no válido o vencido. Pida un enlace nuevo e inténtelo de nuevo.",
     privacy: "Aviso de privacidad (Ley 1581 de 2012 — Habeas Data): su correo se usa únicamente para identificarlo y darle acceso a los documentos de su(s) unidad(es). Puede solicitar la revocación de este acceso en cualquier momento escribiendo a la administración.",
     segment_label: "Unidad", loading: "Cargando…",
-    nav_home: "Inicio", nav_hotel: "El hotel este mes", nav_docs: "Documentos", nav_payments: "Pagos",
-    footer_note: "Casacol — Administración de propietarios. Los valores están en pesos colombianos (COP).",
+    nav_home: "Inicio", nav_docs: "Documentos", nav_payments: "Pagos",
+    footer_note: "Loma Verde — Administración de propietarios. Los valores están en pesos colombianos (COP).",
     latest_month: "Último mes publicado",
     pool_share: "Su participación — total rental pool monthly sales",
     pool_building: "Total rental pool monthly sales del edificio",
@@ -31,18 +31,18 @@ const STR = {
     view_statement: "Ver informe del mes (PDF)",
     no_data: "Todavía no hay meses publicados para esta unidad.",
     closed_note: "Esta unidad cambió de propietario: su historial quedó cerrado y visible solo para consulta.",
-    hotel_title: "El hotel este mes", month_label: "Mes",
+    hotel_title_suffix: "este mes", month_label: "Mes",
     no_insights: "No hay cifras del hotel publicadas para este mes.",
     docs_title: "Documentos",
     col_month: "Mes/Año", col_report: "Informe mensual PDF", col_fevp: "Facturas Siigo PDF", col_tax: "Documentos tributarios PDF",
     doc_statement: "Informe mensual", doc_annex: "Anexo de gastos",
-    pay_title: "Pagos", pay_net: "Giro neto del mes", pay_proof: "Comprobante",
+    pay_title: "Pagos", pay_proof: "Comprobante",
     not_linked: "Su cuenta aún no está vinculada a un propietario. Escriba a la administración para activar su acceso.",
     demo_toast: "Demo: la descarga está deshabilitada.",
     participation: "Participación",
   },
   en: {
-    brand_sub: "Owner Dashboard", sign_out: "Sign out",
+    brand_sub: "Owner Portal", sign_out: "Sign out",
     login_title: "Access your dashboard",
     login_intro: "No passwords. Use only the email address you have on file with us — we will send you a single-use access link, good for 60 minutes.",
     email_label: "Email address", email_ph: "you@email.com",
@@ -54,8 +54,8 @@ const STR = {
     otp_bad: "Invalid or expired code. Request a new link and try again.",
     privacy: "Privacy notice (Law 1581 of 2012 — Habeas Data): your email is used only to identify you and give you access to your unit's documents. You may request removal of this access at any time by writing to the administration.",
     segment_label: "Unit", loading: "Loading…",
-    nav_home: "Home", nav_hotel: "The hotel this month", nav_docs: "Documents", nav_payments: "Payments",
-    footer_note: "Casacol — Owner Administration. All amounts are in Colombian pesos (COP).",
+    nav_home: "Home", nav_docs: "Documents", nav_payments: "Payments",
+    footer_note: "Loma Verde — Owner Administration. All amounts are in Colombian pesos (COP).",
     latest_month: "Latest published month",
     pool_share: "Your share — total rental pool monthly sales",
     pool_building: "Building total rental pool monthly sales",
@@ -64,12 +64,12 @@ const STR = {
     view_statement: "View this month's report (PDF)",
     no_data: "No months have been published for this unit yet.",
     closed_note: "This unit changed ownership: its history is closed and remains visible for reference only.",
-    hotel_title: "The hotel this month", month_label: "Month",
+    hotel_title_suffix: "this month", month_label: "Month",
     no_insights: "No hotel figures have been published for this month.",
     docs_title: "Documents",
     col_month: "Month/Year", col_report: "Monthly report PDF", col_fevp: "Siigo invoices PDF", col_tax: "Tax documents PDF",
     doc_statement: "Monthly report", doc_annex: "Expense annex",
-    pay_title: "Payments", pay_net: "Net transfer for the month", pay_proof: "Proof of payment",
+    pay_title: "Payments", pay_proof: "Proof of payment",
     not_linked: "Your account is not linked to an owner yet. Please write to the administration to activate your access.",
     demo_toast: "Demo: downloads are disabled.",
     participation: "Ownership share",
@@ -317,7 +317,7 @@ function barChart(chart) {
   return data.map((d, i) => {
     const w = Math.max(1.5, (Number(d.value) / max) * 100);
     return `<div class="bar-row"><span>${esc(locLabel(d.label))}</span>
-      <span class="bar-track"><span class="bar-fill ${i === 0 ? "" : (i % 2 ? "gold" : "")}" style="width:${w}%"></span></span>
+      <span class="bar-track"><span class="bar-fill" style="width:${w}%;background:${PALETTE[i % PALETTE.length]}"></span></span>
       <span class="bar-val">${esc(chartValue(d.value, chart.unit))}</span></div>`;
   }).join("");
 }
@@ -381,53 +381,17 @@ function figCard(label, value, sub) {
   return `<div class="fig"><div class="fig-label">${esc(label)}</div>
     <div class="fig-value">${esc(value)}</div>${sub ? `<div class="fig-sub">${esc(sub)}</div>` : ""}</div>`;
 }
-function statusChip(st) {
-  return `<span class="chip ${st === "paid" ? "paid" : "pending"}">${esc(t(st === "paid" ? "paid" : "pending"))}</span>`;
-}
-function formatMetric(m) {
-  if (!m) return "";
-  if (m.format === "money") return money(m.value);
-  if (m.format === "percent") return pct(m.value);
-  if (m.format === "number") return num(m.value);
-  return String(m.value ?? "");
-}
-
-function renderInicio() {
-  const el = $("view-inicio");
-  const seg = currentSegment();
-  if (!seg || !state.summaries.length) { el.innerHTML = `<div class="empty-state">${esc(t("no_data"))}</div>`; return; }
-  const s = state.summaries[0];
-  const stmt = state.documents.find((d) => d.period === s.period && d.type === "statement");
-  const ins = state.insights.find((i) => i.period === s.period);
-  let poolSub = "";
-  if (ins && Array.isArray(ins.headline_metrics)) {
-    const m = ins.headline_metrics.find((x) => /rental pool/i.test(locLabel(x.label)) && Number(x.value) > Number(s.pool_sales_share));
-    if (m) poolSub = `${t("pool_building")}: ${money(m.value)}`;
-  }
-  el.innerHTML = `
-    <h2>${esc(t("latest_month"))} — ${esc(monthName(s.period))}</h2>
-    <div class="fig-grid">
-      ${figCard(t("pool_share"), money(s.pool_sales_share), poolSub)}
-      ${figCard(t("total_expenses"), money(s.total_expenses))}
-      ${figCard(t("net"), money(s.net))}
-      ${figCard(t("saldo"), money(s.saldo_final))}
-    </div>
-    <p>${statusChip(s.payment_status)}${s.payment_note ? ` <span class="muted small">${esc(s.payment_note)}</span>` : ""}</p>
-    ${stmt ? `<button type="button" class="primary-btn" id="latest-stmt">${esc(t("view_statement"))}</button>` : ""}`;
-  const btn = $("latest-stmt");
-  if (btn && stmt) btn.addEventListener("click", () => download(stmt));
-}
-
 function renderHotel() {
   const el = $("view-hotel");
-  if (!state.insights.length) { el.innerHTML = `<h2>${esc(t("hotel_title"))}</h2><div class="empty-state">${esc(t("no_insights"))}</div>`; return; }
+  if (!state.insights.length) { el.innerHTML = `<h2>${esc(hotelTitle())}</h2><div class="empty-state">${esc(t("no_insights"))}</div>`; return; }
   const periods = state.insights.map((i) => i.period);
   if (!periods.includes(state.insightPeriod)) state.insightPeriod = periods[0];
   const ins = state.insights.find((i) => i.period === state.insightPeriod);
   let metrics = "";
   const hm = ins.headline_metrics;
   if (Array.isArray(hm)) {
-    metrics = hm.map((m) => figCard(locLabel(m.label), formatMetric(m))).join("");
+    const keep = hm.filter((m) => !/revpar|llegadas|arrivals/i.test(`${(m.label && m.label.es) || ""} ${(m.label && m.label.en) || ""}`));
+    metrics = keep.map((m) => figCard(locLabel(m.label), formatMetric(m))).join("");
   } else if (hm && typeof hm === "object") {
     metrics = Object.entries(hm).map(([k, v]) =>
       figCard(k.replace(/_/g, " "), (typeof v === "object" && v !== null) ? formatMetric(v) : String(v))).join("");
@@ -437,7 +401,7 @@ function renderHotel() {
   const keys = [...order.filter((k) => charts[k]), ...Object.keys(charts).filter((k) => !order.includes(k))];
   const chartsHtml = keys.map((k) => renderChart(charts[k])).join("");
   el.innerHTML = `
-    <h2>${esc(t("hotel_title"))}</h2>
+    <h2>${esc(hotelTitle())}</h2>
     <label for="insight-month">${esc(t("month_label"))}</label>
     <select id="insight-month" style="max-width:260px">${periods.map((p) =>
       `<option value="${esc(p)}" ${p === state.insightPeriod ? "selected" : ""}>${esc(monthName(p))}</option>`).join("")}</select>
@@ -492,9 +456,8 @@ function renderPagos() {
     const proofs = state.documents.filter((d) => d.period === s.period && d.type === "payment_proof");
     const proofLinks = proofs.map((d) =>
       `<a href="#" class="doc-link" data-doc="${esc(d.id)}">⬇ ${esc(d.title || t("pay_proof"))}</a>`).join("");
-    return `<div class="pay-row"><div><b>${esc(monthName(s.period))}</b>
-      <div class="muted small">${esc(t("pay_net"))}${s.payment_note ? " · " + esc(s.payment_note) : ""}</div>${proofLinks}</div>
-      <div style="text-align:right"><div class="pay-amt">${esc(money(s.net))}</div>${statusChip(s.payment_status)}</div></div>`;
+    return `<div class="pay-row"><div><b>${esc(monthName(s.period))}</b>${proofLinks}</div>
+      <div style="text-align:right"><div class="pay-amt">${esc(money(s.net))}</div></div></div>`;
   }).join("");
   el.innerHTML = `<h2>${esc(t("pay_title"))}</h2><div class="card">${rows}</div>`;
   el.querySelectorAll("[data-doc]").forEach((a) => a.addEventListener("click", (e) => {
@@ -531,11 +494,11 @@ function renderShell() {
   if (seg && seg.active_to) { closed.textContent = t("closed_note"); closed.hidden = false; }
   else closed.hidden = true;
 }
-const ROUTES = { inicio: renderInicio, hotel: renderHotel, documentos: renderDocumentos, pagos: renderPagos };
+const ROUTES = { hotel: renderHotel, documentos: renderDocumentos, pagos: renderPagos };
 function route() {
   if ($("view-app").hidden) return;
-  const name = (location.hash || "#/inicio").replace("#/", "").split("?")[0];
-  const key = ROUTES[name] ? name : "inicio";
+  const name = (location.hash || "#/hotel").replace("#/", "").split("?")[0];
+  const key = ROUTES[name] ? name : "hotel";
   for (const k of Object.keys(ROUTES)) $("view-" + k).hidden = k !== key;
   document.querySelectorAll("#tabs a").forEach((a) =>
     a.classList.toggle("active", a.getAttribute("data-route") === key));
