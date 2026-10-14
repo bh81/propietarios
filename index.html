@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel de Propietario — Casacol</title>
+<meta name="description" content="Panel de propietario Casacol: informes mensuales, facturas y documentos tributarios.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="band">
+  <div class="band-inner">
+    <div class="brand">
+      <div class="brand-name">C A S A C O L</div>
+      <div class="brand-sub" data-i18n="brand_sub">Panel de Propietario</div>
+    </div>
+    <div class="band-actions">
+      <span id="demo-badge" class="demo-badge" hidden>DEMO</span>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" id="lang-es" class="lang-btn">ES</button>
+        <button type="button" id="lang-en" class="lang-btn">EN</button>
+      </div>
+      <button type="button" id="signout-btn" class="ghost-btn" data-i18n="sign_out" hidden>Salir</button>
+    </div>
+  </div>
+  <div class="gold-rule"></div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ LOGIN ============ -->
+  <section id="view-login" class="view">
+    <div class="card login-card">
+      <h1 data-i18n="login_title">Acceda a su panel</h1>
+      <p class="muted" data-i18n="login_intro">Sin contraseñas. Le enviamos un enlace de acceso de un solo uso a su correo registrado; el enlace es válido por 60 minutos.</p>
+
+      <form id="login-form" autocomplete="on">
+        <label for="email" data-i18n="email_label">Correo electrónico</label>
+        <input id="email" name="email" type="email" required autocomplete="email"
+               data-i18n-ph="email_ph" placeholder="su@correo.com">
+        <button type="submit" class="primary-btn" data-i18n="send_link">Enviar enlace de acceso</button>
+      </form>
+      <p id="login-sent" class="notice" role="status" hidden></p>
+
+      <div class="divider"><span data-i18n="or_code">o ingrese con un código</span></div>
+
+      <form id="otp-form">
+        <label for="otp" data-i18n="otp_label">Código de 6 dígitos</label>
+        <div class="otp-row">
+          <input id="otp" name="otp" type="text" inputmode="numeric" autocomplete="one-time-code"
+                 pattern="[0-9]{6}" maxlength="6" placeholder="123456">
+          <button type="submit" class="secondary-btn" data-i18n="verify_code">Entrar</button>
+        </div>
+        <p class="muted small" data-i18n="otp_hint">Si su correo no muestra el enlace, use el código de 6 dígitos que llega en el mismo mensaje.</p>
+      </form>
+      <p id="login-error" class="error" role="alert" hidden></p>
+
+      <p class="privacy small muted" data-i18n="privacy">
+        Aviso de privacidad (Ley 1581 de 2012 — Habeas Data): su correo se usa únicamente para identificarlo y darle acceso a los documentos de su(s) unidad(es). Puede solicitar la revocación de este acceso en cualquier momento escribiendo a la administración.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ APP SHELL ============ -->
+  <section id="view-app" class="view" hidden>
+    <div class="owner-head card">
+      <div>
+        <div id="owner-name" class="owner-name">—</div>
+        <div id="owner-meta" class="muted small">—</div>
+      </div>
+      <div id="segment-box" class="segment-box" hidden>
+        <label for="segment-select" data-i18n="segment_label">Unidad</label>
+        <select id="segment-select"></select>
+      </div>
+    </div>
+    <p id="closed-note" class="notice" hidden></p>
+
+    <nav class="tabs" id="tabs">
+      <a href="#/inicio" data-route="inicio" data-i18n="nav_home">Inicio</a>
+      <a href="#/hotel" data-route="hotel" data-i18n="nav_hotel">El hotel este mes</a>
+      <a href="#/documentos" data-route="documentos" data-i18n="nav_docs">Documentos</a>
+      <a href="#/pagos" data-route="pagos" data-i18n="nav_payments">Pagos</a>
+    </nav>
+
+    <div id="view-inicio" class="subview"></div>
+    <div id="view-hotel" class="subview" hidden></div>
+    <div id="view-documentos" class="subview" hidden></div>
+    <div id="view-pagos" class="subview" hidden></div>
+  </section>
+
+  <p id="loading" class="muted" hidden data-i18n="loading">Cargando…</p>
+  <p id="fatal" class="error" role="alert" hidden></p>
+</main>
+
+<footer class="foot muted small">
+  <span data-i18n="footer_note">Casacol — Administración de propietarios. Los valores están en pesos colombianos (COP).</span>
+</footer>
+
+<div id="toast" class="toast" role="status" hidden></div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

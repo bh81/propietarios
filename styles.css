@@ -1,0 +1,123 @@
+/* Casacol Owner Dashboard — Loma Verde palette, mobile-first, no build step. */
+:root{
+  --green:#1E4634; --green2:#2F6B4F; --gold:#C2A14D; --sand:#F5F1E4;
+  --pale:#EDF2E9; --ink:#26332A; --gray:#5C6B5E; --line:#E3DECB;
+  --red:#B02C28; --white:#FFFFFF;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; color:var(--ink); background:#FBFAF6;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  line-height:1.45;
+}
+h1{font-size:1.45rem;color:var(--green);margin:.2rem 0 .6rem}
+h2{font-size:1.12rem;color:var(--green);margin:1.4rem 0 .6rem}
+h3{font-size:.98rem;color:var(--green);margin:0 0 .4rem}
+a{color:var(--green2)}
+.muted{color:var(--gray)} .small{font-size:.83rem}
+.error{color:var(--red)}
+.wrap{max-width:960px;margin:0 auto;padding:1rem .9rem 2.5rem}
+
+/* Header band — echoes the statement PDF */
+.band{background:var(--green);color:#fff}
+.band-inner{max-width:960px;margin:0 auto;padding:.85rem .9rem;display:flex;
+  align-items:center;justify-content:space-between;gap:1rem}
+.brand-name{font-weight:700;letter-spacing:.28em;font-size:1.05rem}
+.brand-sub{color:#C9D6C0;font-size:.78rem;letter-spacing:.04em}
+.gold-rule{height:3px;background:var(--gold)}
+.band-actions{display:flex;align-items:center;gap:.55rem}
+.lang-toggle{display:flex;border:1px solid #ffffff55;border-radius:999px;overflow:hidden}
+.lang-btn{background:transparent;color:#fff;border:0;padding:.28rem .6rem;font-size:.78rem;cursor:pointer}
+.lang-btn.active{background:var(--gold);color:var(--green);font-weight:700}
+.ghost-btn{background:transparent;color:#fff;border:1px solid #ffffff55;border-radius:8px;
+  padding:.35rem .7rem;font-size:.82rem;cursor:pointer}
+.demo-badge{background:var(--gold);color:var(--green);font-weight:800;font-size:.72rem;
+  letter-spacing:.12em;padding:.25rem .55rem;border-radius:6px}
+
+/* Cards & buttons */
+.card{background:var(--white);border:1px solid var(--line);border-radius:14px;
+  padding:1.1rem 1.1rem 1.2rem;box-shadow:0 1px 3px rgba(30,70,52,.06)}
+.login-card{max-width:520px;margin:2.2rem auto}
+label{display:block;font-size:.85rem;font-weight:600;margin:.7rem 0 .3rem}
+input,select{
+  width:100%;padding:.62rem .7rem;border:1px solid #C9CFC2;border-radius:9px;
+  font-size:1rem;background:#fff;color:var(--ink);
+}
+input:focus,select:focus{outline:2px solid var(--gold);outline-offset:1px}
+.primary-btn{
+  width:100%;margin-top:1rem;background:var(--green);color:#fff;border:0;border-radius:10px;
+  padding:.75rem 1rem;font-size:1rem;font-weight:700;cursor:pointer;
+}
+.primary-btn:hover{background:var(--green2)}
+.secondary-btn{
+  background:var(--sand);color:var(--green);border:1px solid var(--gold);border-radius:10px;
+  padding:.62rem 1rem;font-weight:700;cursor:pointer;white-space:nowrap;
+}
+.divider{display:flex;align-items:center;gap:.8rem;margin:1.2rem 0 .2rem;color:var(--gray);font-size:.8rem}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line)}
+.otp-row{display:flex;gap:.6rem}.otp-row input{flex:1}
+.notice{background:var(--pale);border:1px solid var(--line);border-radius:10px;padding:.6rem .8rem;margin-top:.9rem}
+.privacy{margin-top:1.4rem;border-top:1px solid var(--line);padding-top:.7rem}
+
+/* App shell */
+.owner-head{display:flex;justify-content:space-between;align-items:end;gap:1rem;flex-wrap:wrap;margin-top:.4rem}
+.owner-name{font-size:1.25rem;font-weight:800;color:var(--green)}
+.segment-box{min-width:210px}.segment-box label{margin-top:0}
+.tabs{display:flex;gap:.4rem;margin:1rem 0 .4rem;overflow-x:auto;padding-bottom:.2rem}
+.tabs a{
+  text-decoration:none;color:var(--green);background:var(--sand);border:1px solid var(--line);
+  padding:.5rem .9rem;border-radius:999px;font-weight:600;font-size:.9rem;white-space:nowrap;
+}
+.tabs a.active{background:var(--green);color:#fff;border-color:var(--green)}
+
+/* Figure cards */
+.fig-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;margin:.8rem 0}
+.fig{background:var(--sand);border:1px solid var(--line);border-radius:12px;padding:.8rem .9rem}
+.fig .fig-label{font-size:.76rem;letter-spacing:.05em;text-transform:uppercase;color:var(--gray)}
+.fig .fig-value{font-size:1.35rem;font-weight:800;color:var(--green);margin-top:.15rem}
+.fig .fig-sub{font-size:.78rem;color:var(--gray)}
+.chip{display:inline-block;padding:.14rem .6rem;border-radius:999px;font-size:.78rem;font-weight:700}
+.chip.paid{background:var(--pale);color:var(--green2);border:1px solid var(--green2)}
+.chip.pending{background:#FBF3D9;color:#8F7430;border:1px solid var(--gold)}
+
+/* Charts */
+.chart-card{margin:.8rem 0}
+.bar-row{display:grid;grid-template-columns:110px 1fr 64px;gap:.6rem;align-items:center;margin:.32rem 0;font-size:.88rem}
+.bar-track{background:var(--pale);border-radius:6px;height:16px;overflow:hidden}
+.bar-fill{background:var(--green2);height:100%;border-radius:6px}
+.bar-fill.gold{background:var(--gold)}
+.bar-val{text-align:right;font-variant-numeric:tabular-nums}
+.donut-flex{display:flex;gap:1.1rem;align-items:center;flex-wrap:wrap}
+.legend{list-style:none;margin:0;padding:0;font-size:.9rem}
+.legend li{margin:.25rem 0}
+.swatch{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:.5rem;vertical-align:-1px}
+svg text{font-family:inherit}
+
+/* Documents matrix */
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+table.matrix{border-collapse:collapse;width:100%;min-width:640px}
+.matrix th,.matrix td{padding:.6rem .7rem;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:.92rem}
+.matrix thead th{background:var(--green);color:#fff;font-size:.82rem;letter-spacing:.03em}
+.matrix tr.year-row td{background:var(--sand);font-weight:800;color:var(--green);border-bottom:1px solid var(--gold)}
+.doc-link{display:block;margin:.18rem 0;text-decoration:none;font-weight:600}
+.doc-link:hover{text-decoration:underline}
+.empty-cell{color:#B9BFA9}
+
+/* Payments */
+.pay-row{display:flex;justify-content:space-between;gap:1rem;align-items:center;
+  padding:.7rem .2rem;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.pay-amt{font-weight:800;color:var(--green);font-variant-numeric:tabular-nums}
+
+.foot{max-width:960px;margin:0 auto;padding:0 .9rem 2rem}
+.toast{
+  position:fixed;left:50%;bottom:1.2rem;transform:translateX(-50%);
+  background:var(--green);color:#fff;padding:.6rem 1.1rem;border-radius:999px;
+  font-size:.9rem;box-shadow:0 4px 14px rgba(0,0,0,.25);z-index:50;
+}
+.empty-state{background:#fff;border:1px dashed var(--line);border-radius:12px;padding:1.2rem;text-align:center;color:var(--gray)}
+
+@media (min-width:720px){
+  .wrap{padding:1.4rem 1rem 3rem}
+  .bar-row{grid-template-columns:150px 1fr 76px}
+}
