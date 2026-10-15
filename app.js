@@ -381,6 +381,7 @@ function figCard(label, value, sub) {
   return `<div class="fig"><div class="fig-label">${esc(label)}</div>
     <div class="fig-value">${esc(value)}</div>${sub ? `<div class="fig-sub">${esc(sub)}</div>` : ""}</div>`;
 }
+function hotelTitle() { const seg = currentSegment(); const prop = propertyOf(ownerOf(seg)); return `${(prop && prop.name) || "Loma Verde"} ${t("hotel_title_suffix")}`; }
 function renderHotel() {
   const el = $("view-hotel");
   if (!state.insights.length) { el.innerHTML = `<h2>${esc(hotelTitle())}</h2><div class="empty-state">${esc(t("no_insights"))}</div>`; return; }
